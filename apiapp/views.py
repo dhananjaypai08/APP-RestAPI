@@ -13,11 +13,11 @@ from django.contrib import messages
 def showPatterns(request):
     urlpatterns = {  
     '': 'urlpatterns',
-    'View data': 'view/',
-    'View specific data': 'view/<str:name>',
-    'Add data': 'add/',
-    'Update data': 'update/<str:name>',
-    'Delete data': 'delete/<str:name>',
+    'View data': 'api-auth/view/',
+    'View specific data': 'api-auth/view/<str:name>',
+    'Add data': 'api-auth/add/',
+    'Update data': 'api-auth/update/<str:name>',
+    'Delete data': 'api-auth/delete/<str:name>',
     }
     return Response(urlpatterns)
 
@@ -30,8 +30,8 @@ def getData(request):
     return Response(serializer.data)
 
 @api_view(['GET'])
-def getSpecificData(request, name):
-    person = Person.objects.get(name=name)
+def getSpecificData(request, id):
+    person = Person.objects.get(id=id)
     serializer = PersonSerializer(person)
     
     return Response(serializer.data)
@@ -50,8 +50,8 @@ def addData(request):
     #return Response(alldataserializer.data)
     
 @api_view(['POST'])
-def updateData(request, name):
-    person = Person.objects.get(name=name)
+def updateData(request, id):
+    person = Person.objects.get(id=id)
     serializer = PersonSerializer(instance=person, data=request.data)
     if serializer.is_valid():
         serializer.save()
@@ -59,7 +59,7 @@ def updateData(request, name):
 
 
 @api_view(['DELETE'])
-def deleteData(request, name):
-    person = Person.objects.get(name=name)
+def deleteData(request, id):
+    person = Person.objects.get(id=id)
     person.delete()
     return Response('Item Deleted')
