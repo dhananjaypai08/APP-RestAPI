@@ -27,7 +27,7 @@ def getData(request):
     persons = Person.objects.all()
     serializer = PersonSerializer(persons, many=True)
     
-    return Response(serializer.data)
+    return Response(serializer.data, 200)
 
 @api_view(['GET'])
 def getSpecificData(request, id):
@@ -43,7 +43,7 @@ def addData(request):
     if serializer.is_valid():
         serializer.save()
     data = serializer.data    
-    return Response(data)
+    return Response(data, 201)
     #alldata = Person.objects.all()
     #alldataserializer = PersonSerializer(alldata, many=True)
     #return Response(alldataserializer.data)
