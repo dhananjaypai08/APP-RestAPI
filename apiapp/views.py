@@ -42,8 +42,7 @@ def addData(request):
     serializer = PersonSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
-    data = serializer.data
-    messages.add_message(request, messages.SUCCESS, 'Person created!')
+    data = serializer.data    
     return Response(data)
     #alldata = Person.objects.all()
     #alldataserializer = PersonSerializer(alldata, many=True)
