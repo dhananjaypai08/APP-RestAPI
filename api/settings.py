@@ -42,6 +42,9 @@ INSTALLED_APPS = [
     'apiapp',
     'core',
     'rest_framework',
+    'coreapi',
+    #'rest_framework_swagger',
+    'drf_yasg',
 ]
 
 MIDDLEWARE = [
@@ -68,6 +71,8 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
+            #'libraries': { # Added manually 
+            #'staticfiles' : 'django.templatetags.static', },
         },
     },
 ]
@@ -126,3 +131,11 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Added manually for resolving -> AttributeError: 'AutoSchema' object has no attribute 'get_link'
+'''
+REST_FRAMEWORK = {'DEFAULT_SCHEMA_CLASS':'rest_framework.schemas.coreapi.AutoSchema' }
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"),
+]
+'''
