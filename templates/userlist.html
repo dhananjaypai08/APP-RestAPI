@@ -40,41 +40,7 @@
               </nav>
           </div>
     </div>
-    <div class="container">
-      <form method="POST" action="/viewuser/all/"> {% csrf_token %}
-      <div class="dropdown">
-        <button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenu2" data-bs-toggle="dropdown" aria-expanded="false">
-          Sort by
-        </button>
-        <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
-          <div class="form-check">
-            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" checked>
-            <label class="form-check-label" for="flexRadioDefault1">
-              UserId
-            </label>
-          </div>
-          <div class="form-check">
-            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
-            <label class="form-check-label" for="flexRadioDefault2">
-              UserAge
-            </label>
-          </div>
-          <div class="form-check">
-            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault3">
-            <label class="form-check-label" for="flexRadioDefault3">
-              UserCreated
-            </label>
-            <div class="form-check">
-              <a href="/viewuser/all/">
-              <label class="form-check-label" for="flexRadioDefault3">
-                Cancel
-              </label>
-            </a>
-          </div>
-        </ul>
-      </div>
-    </form>
-    </div>
+    
     <br>
     <br>
     <div class="container">
