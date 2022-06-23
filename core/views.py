@@ -1,8 +1,10 @@
 from django.shortcuts import render
 import requests
 import json
-from apiapp.models import Person
+from apiapp.models import Dog
 # Create your views here.
+
+BASE_DIR = 'api/media/api/static'
 
 def home(request):
     """ This is the root function for the core app """
@@ -20,7 +22,7 @@ def listUser(request):
         print(idflg, ageflg, createdflg)
         if search.isdigit():
             id = int(search)
-            data = Person.objects.get(id=id)
+            data = Dog.objects.get(id=id)
             usrdata = {
                 "id": data.id,
                 "name": data.name,
@@ -30,7 +32,7 @@ def listUser(request):
             msg['search'] = 1
         else:
             name = search
-            data = Person.objects.filter(name=name)
+            data = Dog.objects.filter(name=name)
             usrdata = {}
             
             for ind,usr in enumerate(data):
@@ -48,7 +50,6 @@ def listUser(request):
         msg['signal'] = 1
     except:
         msg['signal'] = 2
-    print(msg)
     return render(request, 'userlist.html', msg)
         
 def listSpecificUser(request):
@@ -84,7 +85,7 @@ def updateUser(request):
         if search:
             if search.isdigit():
                 usrid = int(search)
-                data = Person.objects.get(id=usrid)
+                data = Dog.objects.get(id=usrid)
                 usrdata = {
                     "id": data.id,
                     "name": data.name,
@@ -94,7 +95,7 @@ def updateUser(request):
                 msg['search'] = 1
                 
             else:
-                data = Person.objects.filter(name=search)
+                data = Dog.objects.filter(name=search)
                 usrdata = {}
                 for ind, usr in enumerate(data):
                     lvl = {}
@@ -141,7 +142,7 @@ def updatingUser(request):
             store_id(id)
         if id:
             try:
-                data = Person.objects.get(id=id)
+                data = Dog.objects.get(id=id)
                 usrdata = {
                     "id": data.id,
                     "name": data.name,

@@ -3,8 +3,8 @@ from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from apiapp import serializers
-from apiapp.models import Person
-from apiapp.serializers import PersonSerializer
+from apiapp.models import Dog
+from apiapp.serializers import DogSerializer
 from django.contrib import messages
 # Create your views here.
 
@@ -27,16 +27,16 @@ def showPatterns(request):
 def getData(request):
     """ This function is used to get the data from the database model """
     #person = {'name': 'Dhananjay', 'age':28}
-    persons = Person.objects.all()
-    serializer = PersonSerializer(persons, many=True)
+    dogs = Dog.objects.all()
+    serializer = DogSerializer(dogs, many=True)
     
     return Response(serializer.data, 200)
 
 @api_view(['GET'])
 def getSpecificData(request, id):
     """ This function is used to get the data of specific Id item from the database """
-    person = Person.objects.get(id=id)
-    serializer = PersonSerializer(person)
+    person = Dog.objects.get(id=id)
+    serializer = DogSerializer(person)
     
     return Response(serializer.data)
     
@@ -44,11 +44,11 @@ def getSpecificData(request, id):
 @api_view(['POST'])
 def addData(request):
     """ This function is used to add the data to the database """
-    serializer = PersonSerializer(data=request.data)
+    serializer = DogSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
     data = serializer.data    
-    return Response(data, 201)
+    return Response(data)
     #alldata = Person.objects.all()
     #alldataserializer = PersonSerializer(alldata, many=True)
     #return Response(alldataserializer.data)
@@ -56,8 +56,8 @@ def addData(request):
 @api_view(['POST'])
 def updateData(request, id):
     """ This function is used to update the data in the database """
-    person = Person.objects.get(id=id)
-    serializer = PersonSerializer(instance=person, data=request.data)
+    person = Dog.objects.get(id=id)
+    serializer = DogSerializer(instance=person, data=request.data)
     if serializer.is_valid():
         serializer.save()
     return Response(serializer.data)
@@ -66,6 +66,6 @@ def updateData(request, id):
 @api_view(['DELETE'])
 def deleteData(request, id):
     """ This function is used to update the delete the data from the database """
-    person = Person.objects.get(id=id)
+    person = Dog.objects.get(id=id)
     person.delete()
     return Response('Item Deleted')

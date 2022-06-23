@@ -1,6 +1,9 @@
 from django.urls import path 
 from core import views
 
+from django.conf import settings
+from django.conf.urls.static import static
+
 urlpatterns = [
     path('', views.home, name='home'),
     path('viewuser/all/', views.listUser, name='listuser'),
@@ -9,4 +12,4 @@ urlpatterns = [
     path('updateuser/', views.updateUser, name='updateuser'),
     path('updateuser/updatinguser/', views.updatingUser, name='updatinguser'),
     path('deleteuser/', views.deleteUser, name='deleteuser'),
-]
+]+ static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT )

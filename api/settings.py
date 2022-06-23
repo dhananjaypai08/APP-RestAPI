@@ -135,7 +135,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Added manually for resolving -> AttributeError: 'AutoSchema' object has no attribute 'get_link'
 '''
 REST_FRAMEWORK = {'DEFAULT_SCHEMA_CLASS':'rest_framework.schemas.coreapi.AutoSchema' }
+'''
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
-'''
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/' # 'http://myhost:port/media/'

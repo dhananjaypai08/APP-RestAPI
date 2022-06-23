@@ -1,8 +1,7 @@
 from rest_framework import serializers
-from apiapp.models import Person
-
-class PersonSerializer(serializers.ModelSerializer):
+from apiapp.models import Dog
+class DogSerializer(serializers.ModelSerializer):
     #userid = serializers.PrimaryKeyRelatedField(queryset=Person.objects.all())
     class Meta:
-        model = Person
-        fields = ['id', 'name', 'age', 'created']
+        model = Dog
+        fields = '__all__' # or ['id', 'name', 'description', 'image', 'location','created']

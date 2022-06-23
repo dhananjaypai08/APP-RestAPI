@@ -75,21 +75,20 @@
   <br>
   {% endfor %}
         {% elif signal == 1 %}
+        <div class="container">
             {% for dic in data %}
-            <div class="card-body">
-              <h5 class="card-title">{{dic.name}}</h5>
-              <p class="lead">
-                User Id of {{dic.name}} = {{dic.id}}
-              </p>
-              <ul class="list-unstyled">
-                <li>UserName : {{dic.name}}</li>
-                <li>UserId : {{dic.id}}</li>
-                <li>UserAge : {{dic.age}}</li>
-                <li>UserCreated: {{dic.created}}</li>
-              </ul>
+            <div class="card mb-3">
+              <p>ID: {{dic.id}}</p> <h5 class="card-title"><mark>Name:</mark> {{dic.name}}</h5>
+              <img src="{{dic.image}}" height="250" width="40" class="card-img-top" alt="...">
+              <div class="card-body">
+                <p class="card-text"><mark>Description:</mark> <strong>{{dic.description}}</strong></p>
+                <p class="card-text"><mark>Location:</mark> <strong>{{dic.location}}</strong></p>
+                <p class="card-text"><mark>Added on:</mark> <strong>{{dic.created}}</strong></p>
+              </div>
             </div>
-          <br>
+            
           {% endfor %}
+        </div>
         {% elif signal == 2 %}
             <div class="alert alert-danger" role="alert">
             Ehhhh.. Something went wrong. Please try again after some time.
