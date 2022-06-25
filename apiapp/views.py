@@ -6,6 +6,7 @@ from apiapp import serializers
 from apiapp.models import Dog
 from apiapp.serializers import DogSerializer
 from django.contrib import messages
+from django.views.decorators.csrf import csrf_exempt, csrf_protect
 # Create your views here.
 
 
@@ -47,8 +48,10 @@ def addData(request):
     serializer = DogSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
-    data = serializer.data    
-    return Response(data)
+        print('saved')
+        data = serializer.data    
+        return Response(data)
+    return Response("Item Not Added")
     #alldata = Person.objects.all()
     #alldataserializer = PersonSerializer(alldata, many=True)
     #return Response(alldataserializer.data)

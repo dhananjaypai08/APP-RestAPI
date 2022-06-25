@@ -50,15 +50,23 @@
     </div>
     <br>
     <div class="container">
-    <form class="row g-3" action="/adduser/" method="POST"> {% csrf_token %}
-        <div class="mb-3">
-            <label for="exampleFormControlInput1" class="form-label">Name</label>
-            <input name="name" type="text" class="form-control" id="exampleFormControlInput1" placeholder="Enter UserName">
-          </div>
-          <div class="mb-3">
-            <label for="exampleFormControlTextInput1" class="form-label">Age</label>
-            <input name="age" type="text" class="form-control" id="exampleFormControlInput1" placeholder="Enter your Age">
-        </div>
+    <form class="row g-3" action="/adduser/" enctype="multipart/form-data" method="POST"> {% csrf_token %}
+      <div class="input-group">
+        <span class="input-group-text" id="basic-addon1">Enter Name</span>
+        <input name="name" type="text" class="form-control" placeholder="name" aria-label="Username" aria-describedby="basic-addon1">
+      </div>
+      <div class="input-group">
+        <span class="input-group-text">Description</span>
+        <textarea name="description" class="form-control" aria-label="With textarea" required=True></textarea>
+      </div>
+      <div class="input-group">
+        <span class="input-group-text">Location</span>
+        <textarea name="location" class="form-control" aria-label="With textarea" required=True></textarea>
+      </div>
+      <div class="input-group mb-3">
+        <label class="input-group-text" for="inputGroupFile02">Add Image</label>
+        <input name="image" type="file" class="form-control" id="inputGroupFile02" required=True>
+      </div>
         <button type="Submit" class="btn btn-outline-success">Add</button>
       </form>
     </div>
