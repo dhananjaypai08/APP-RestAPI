@@ -3,14 +3,14 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Update</title>
+    <title>Update a Dog</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
   </head>
   <body>
     <div class="container">
         <nav class="navbar navbar-expand-lg bg-light">
             <div class="container-fluid">
-              <a class="navbar-brand" href="/">Update any users data.</a>
+              <a class="navbar-brand" href="/">Update any Dog's data.</a>
               <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
               </button>
@@ -24,7 +24,7 @@
                   </li>
                 </ul>
                 <form class="d-flex" role="search" method="POST" action='/updateuser/'> {% csrf_token %}
-                  <input name='search' class="form-control me-2" type="search" placeholder="Enter UserId or UserName" aria-label="Search" required=True>
+                  <input name='search' class="form-control me-2" type="search" placeholder="Enter Dog's Id or Name" aria-label="Search" required=True>
                   <button class="btn btn-outline-success" type="submit">Search</button>
                 </form>
               </div>
@@ -35,7 +35,7 @@
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
                   <li class="breadcrumb-item"><a href="/">Home</a></li>
-                  <li class="breadcrumb-item active" aria-current="page">Update User</li>
+                  <li class="breadcrumb-item active" aria-current="page">Update a Dog</li>
                 </ol>
               </nav>
           </div>
@@ -52,10 +52,18 @@
         </p>
         <br>
         <ul class="list-unstyled">
-          <li>UserName : {{filtereddata.name}}</li>
-          <li>UserId : {{filtereddata.id}}</li>
-          <li>UserAge : {{filtereddata.age}}</li>
-          <li>UserCreated: {{filtereddata.created}}</li>
+          <img
+              src="{{filtereddata.image}}"
+              height="250"
+              width="40"
+              class="card-img-top"
+              alt="..."
+            />
+          <li>Name : {{filtereddata.name}}</li>
+          <li>Id : {{filtereddata.id}}</li>
+          <li>Description : {{filtereddata.description}}</li>
+          <li>Location : {{data.location}}</li>
+          <li>Created : {{filtereddata.created}}</li>
         </ul>
       </div>
     <br>
@@ -63,39 +71,61 @@
      {% for ind,data in filtereddata.items %}
      <div class="card-body">
       <h5 class="card-title">{{ind}} : {{data.name}}</h5>
+      <img
+        src="{{data.image}}"
+        height="250"
+        width="40"
+        class="card-img-top"
+        alt="..."
+            />
       <p class="lead">
-        <strong> User Id of {{data.name}} = {{data.id}} </strong>
+        <strong> Id of {{data.name}} = {{data.id}} </strong>
       </p>
       <br>
       <ul class="list-unstyled">
-        <li>UserName : {{data.name}}</li>
-        <li>UserId : {{data.id}}</li>
-        <li>UserAge : {{data.age}}</li>
-        <li>UserCreated: {{data.created}}</li>
+        <li>Name : {{data.name}}</li>
+        <li>Id : {{data.id}}</li>
+        <li>Description : {{data.description}}</li>
+        <li>Location : {{data.location}}</li>
+        <li>Created : {{data.created}}</li>
       </ul>
     </div>
   <br>
   {% endfor %}
+  {% elif search == 3 %}
+  <div class="alert alert-warning" role="alert">
+    We're Sorry :( .The Dog you are searching for cannot be found.
+  </div>
+  <br>
+  <a href="/updateuser/" class="link-dark">Go Back</a>
   {% elif signal == 1 %}
         <form method="POST" action="/updateuser/updatinguser/"> {% csrf_token %}
           <div class="input-group mb-3">
             <input name="id" type="text" class="form-control" placeholder="Enter Id of the User" aria-label="Recipient's id" aria-describedby="basic-addon2">
-            <span class="input-group-text" id="basic-addon2">Provide UserId to of the user to be updated.</span>
+            <span class="input-group-text" id="basic-addon2">Provide Id of the Dog to be updated.</span>
           </div>
           <button type="submit" class="btn btn-outline-info">Enter</button>
         </form>
         <br>
             {% for dic in data %}
             <div class="card-body">
+              <img
+              src="{{dic.image}}"
+              height="250"
+              width="40"
+              class="card-img-top"
+              alt="..."
+            />
               <h5 class="card-title">{{dic.name}}</h5>
               <p class="lead">
-                User Id of {{dic.name}} = {{dic.id}}
+                Id of {{dic.name}} = {{dic.id}}
               </p>
               <ul class="list-unstyled">
-                <li>UserName : {{dic.name}}</li>
-                <li>UserId : {{dic.id}}</li>
-                <li>UserAge : {{dic.age}}</li>
-                <li>UserCreated: {{dic.created}}</li>
+                <li>Name : {{dic.name}}</li>
+                <li>Id : {{dic.id}}</li>
+                <li>Description : {{dic.description}}</li>
+                <li>Location : {{dic.location}}</li>
+                <li>Created : {{dic.created}}</li>
               </ul>
             </div>
           <br>
@@ -104,6 +134,8 @@
             <div class="alert alert-danger" role="alert">
             Ehhhh.. Something went wrong. Please try again after some time.
             </div>
+            <br>
+            <a href="/updateuser/" class="link-dark">Go Back</a>
     {% endif %}
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>

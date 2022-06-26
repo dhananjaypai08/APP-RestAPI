@@ -1,11 +1,196 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Bootstrap demo</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Delete Record</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor"
+      crossorigin="anonymous"
+    />
   </head>
   <body>
-    
+    <div class="container">
+      <nav class="navbar navbar-expand-lg bg-light">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="/">Delete any Dogs data</a>
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="/">Home</a>
+              </li>
+              <li class="nav-item">
+                <a
+                  class="nav-link active"
+                  href="https://www.linkedin.com/in/dhananjay-pai"
+                  >Connect</a
+                >
+              </li>
+            </ul>
+            <form
+              class="d-flex"
+              role="search"
+              method="POST"
+              action="/deleteuser/"
+            >
+              {% csrf_token %}
+              <input
+                name="search"
+                class="form-control me-2"
+                type="search"
+                placeholder="Enter Dog's Id or Dog's name"
+                aria-label="Search"
+                required="True"
+              />
+              <button class="btn btn-outline-success" type="submit">
+                Search
+              </button>
+            </form>
+          </div>
+        </div>
+      </nav>
+
+      <div class="container">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">
+              Delete any Dog's data completely
+            </li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+
+    <br />
+    <br />
+    <div class="container">
+      {% if search == 1 %}
+      <div class="card-body">
+        <h5 class="card-title">Searched Data</h5>
+        <br />
+        <p class="lead">
+          Id of {{filtereddata.name}} = {{filtereddata.id}}
+        </p>
+        <ul class="list-unstyled">
+          <li>
+            <img
+              src="{{filtereddata.image}}"
+              height="250"
+              width="40"
+              class="card-img-top"
+              alt="..."
+            />
+          </li>
+          <li>Name : {{filtereddata.name}}</li>
+          <li>Id : {{filtereddata.id}}</li>
+          <li>Description : {{filtereddata.description}}</li>
+          <li>Location: {{filtereddata.location}}</li>
+          <li>Created: {{filtereddata.created}}</li>
+        </ul>
+      </div>
+      <br />
+      {% elif search == 2 %}
+      <h5 class="card-title">Filtered Data</h5>
+      <br>
+      {% for ind,data in filtereddata.items %}
+      <div class="card-body">
+        <p class="lead">
+          <strong> Id of {{data.name}} = {{data.id}} </strong>
+        </p>
+        <ul class="list-unstyled">
+          <li>
+            <img
+              src="{{data.image}}"
+              height="250"
+              width="40"
+              class="card-img-top"
+              alt="..."
+            />
+          </li>
+          <li>Name : {{data.name}}</li>
+          <li>Id : {{data.id}}</li>
+          <li>Age : {{data.description}}</li>
+          <li>Location : {{data.location}}</li>
+          <li>Created: {{data.created}}</li>
+        </ul>
+      </div>
+      <br />
+      {% endfor %} 
+      {% elif search == 3 %}
+      <div class="alert alert-warning" role="alert">
+        We're Sorry :( .The Dog you are searching for cannot be found.
+      </div>
+      <br>
+      <a href="/" class="link-dark">Go Back</a>
+  {% endif %}
+  {% if signal == 2 %}
+      <div class="alert alert-success" role="alert">
+        Data Deleted Successfully!
+      </div>
+      <br>
+  {% elif signal == 3 %}
+      <div class="alert alert-danger" role="alert">
+        Ehhhh.. Something went wrong. Please try again after some time.
+      </div>
+      <br>
+  {% endif %}
+  {% if signal == 2 or signal == 3 or signal == 1 %}
+      <div class="container">
+        <form method="POST" action="/deleteuser/"> {% csrf_token %}
+          <div class="input-group mb-3">
+            <input name="id" type="text" class="form-control" placeholder="Enter Id of the User" aria-label="Recipient's id" aria-describedby="basic-addon2" required="True">
+            <span class="input-group-text" id="basic-addon2">Provide Id of the Dog's data to be removed from the database.</span>
+          </div>
+          <button type="submit" class="btn btn-outline-info">Enter</button>
+        </form>
+        <br>
+        {% for dic in data %}
+        <div class="card mb-3">
+          <p>ID: {{dic.id}}</p>
+          
+          <img
+            src={{dic.image}}
+            height="350"
+            width="40"
+            class="card-img-top"
+            alt="..."
+          /> <br>
+          <h5 align="center" class="card-title"><mark>Name:</mark> {{dic.name}}</h5>
+          <div class="card-body">
+            <p class="card-text">
+              <mark>Description:</mark> <strong>{{dic.description}}</strong>
+            </p>
+            <p class="card-text">
+              <mark>Location:</mark> <strong>{{dic.location}}</strong>
+            </p>
+            <p class="card-text">
+              <mark>Added on:</mark> <strong>{{dic.created}}</strong>
+            </p>
+          </div>
+        </div>
+
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
+      crossorigin="anonymous"
+    ></script>
   </body>
 </html>

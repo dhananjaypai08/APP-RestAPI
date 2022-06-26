@@ -35,8 +35,8 @@
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
                   <li class="breadcrumb-item"><a href="/">Home</a></li>
-                  <li class="breadcrumb-item"><a href="/updateuser/">Update User</a></li>
-                  <li class="breadcrumb-item active" aria-current="page">Updating User</li>
+                  <li class="breadcrumb-item"><a href="/updateuser/">Update a Dog</a></li>
+                  <li class="breadcrumb-item active" aria-current="page">Updating Dog</li>
                 </ol>
               </nav>
           </div>
@@ -47,31 +47,48 @@
     <div class="container">
     {% if signal == 1 %}
     <div class="alert alert-info alert-dismissible fade show" role="alert">
-        Please Note that UserId and UserCreated cannot be updated.
+        Please Note that Dog Id and Created date time cannot be updated.
+        Every field in the form is not necessary to be filled. Just add the data you want to be updated.
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
       </div>    
             <div class="card-body">
               <h5 class="card-title">{{data.name}}</h5>
+              <img
+              src="{{data.image}}"
+              height="250"
+              width="40"
+              class="card-img-top"
+              alt="..."
+            />
               <p class="lead">
-                User Id of {{data.name}} = {{data.id}}
+                Id of {{data.name}} = {{data.id}}
               </p>
               <ul class="list-unstyled">
-                <li>UserName : {{data.name}}</li>
-                <li>UserId : {{data.id}}</li>
-                <li>UserAge : {{data.age}}</li>
-                <li>UserCreated: {{data.created}}</li>
+                <li>Name : {{data.name}}</li>
+                <li>Id : {{data.id}}</li>
+                <li>Description : {{data.description}}</li>
+                <li>Location : {{data.location}}</li>
+                <li>Created: {{data.created}}</li>
               </ul>
             </div>
           <br>
-          <form class="row g-3" action="/updateuser/updatinguser/" method="POST"> {% csrf_token %}
+          <form class="row g-3" action="/updateuser/updatinguser/" enctype="multipart/form-data" method="POST"> {% csrf_token %}
             <div class="mb-3">
                 <label for="exampleFormControlInput1" class="form-label">Name</label>
-                <input name="name" type="text" class="form-control" id="exampleFormControlInput1" placeholder="Enter New UserName">
+                <input name="name" type="text" class="form-control" id="exampleFormControlInput1" placeholder="Enter New Name">
               </div>
               <div class="mb-3">
-                <label for="exampleFormControlTextInput1" class="form-label">Age</label>
-                <input name="age" type="text" class="form-control" id="exampleFormControlInput1" placeholder="Enter your New Age">
+                <label for="exampleFormControlTextInput1" class="form-label">Description</label>
+                <input name="description" type="text" class="form-control" id="exampleFormControlInput1" placeholder="Enter Description">
             </div>
+            <div class="input-group mb-3">
+              <label class="input-group-text" for="inputGroupFile02">Image</label>
+              <input name="image" type="file" class="form-control" id="inputGroupFile02">
+            </div>
+            <div class="mb-3">
+              <label for="exampleFormControlTextInput1" class="form-label">Location</label>
+              <input name="location" type="text" class="form-control" id="exampleFormControlInput1" placeholder="Enter Description">
+          </div>
             <button type="Submit" class="btn btn-outline-success">Update</button>
           </form>
         {% elif signal == 2 %}

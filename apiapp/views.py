@@ -63,6 +63,8 @@ def updateData(request, id):
     serializer = DogSerializer(instance=person, data=request.data)
     if serializer.is_valid():
         serializer.save()
+        #print('saved in database')
+    
     return Response(serializer.data)
 
 

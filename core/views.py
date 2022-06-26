@@ -1,11 +1,9 @@
 from django.shortcuts import render
 import requests
 import json
-from apiapp.serializers import DogSerializer
 from apiapp.models import Dog
-from apiapp.serializers import DogImageForm
 from django.core.files.storage import FileSystemStorage
-from django.core.files import File
+
 # Create your views here.
 
 BASE_ADDRESS = 'http://127.0.0.1:8000/media/'
@@ -60,13 +58,12 @@ def listUser(request):
                     usrdata[ind+1] = lvl
                 msg['search'] = 2
                 msg['filtereddata'] = usrdata
-                    #print(msg['filtereddata'])
+                #print(msg['filtereddata'])
     try:
         data = getUsersData()
         for i in range(len(data)):
             data[i]['image'] = BASE_ADDRESS + data[i]['image']
-        print()
-        print(data)
+            
         msg['data'] = data
         msg['signal'] = 1
     except:
@@ -74,6 +71,7 @@ def listUser(request):
     return render(request, 'userlist.html', msg)
         
 def listSpecificUser(request):
+    """ This was made with the view of creating a seperate profile for each instance """
     return render(request, 'listSpecificUser.html')
 
 
@@ -99,14 +97,14 @@ def addUser(request):
     
         imagename = FILE_SYSTEM.save(image.name, image)
         #image_url = FILE_SYSTEM.url(imagename)
-        print(imagename)
+        #print(imagename)
         url = 'http://127.0.0.1:8000/api-auth/add/'
         try:
             data={"name": name, "description": description, "image": imagename, "location": location}
             reqdata = requests.post(url, data=data)
-            print(reqdata) # Response code
+            #print(reqdata) # Response code
             data = reqdata.json()
-            print(data)
+            #print(data)
             msg['added'] = 1
         except:
             msg['added'] = 2
@@ -123,29 +121,45 @@ def updateUser(request):
         if search:
             if search.isdigit():
                 usrid = int(search)
-                data = Dog.objects.get(id=usrid)
-                usrdata = {
-                    "id": data.id,
-                    "name": data.name,
-                    "age": data.age,
-                    "created": data.created
-                }
-                msg['search'] = 1
+                try:
+                    data = Dog.objects.get(id=usrid)
+                    usrdata = {
+                        "id": data.id,
+                        "name": data.name,
+                        "description": data.description,
+                        "image": BASE_ADDRESS+data.image,
+                        "location": data.location,
+                        "created": data.created
+                    }
+                    msg['search'] = 1
+                    msg['filtereddata'] = usrdata
+                except:
+                    msg['search'] = 3
                 
             else:
                 data = Dog.objects.filter(name=search)
-                usrdata = {}
-                for ind, usr in enumerate(data):
-                    lvl = {}
-                    lvl['id'] = usr.id
-                    lvl['name'] = usr.name
-                    lvl['age'] = usr.age
-                    lvl['created'] = usr.created
-                    usrdata[ind+1] = lvl 
-            msg['filtereddata'] = usrdata 
-    url = 'http://127.0.0.1:8000/api-auth/view/'
+                if data:
+                    usrdata = {}
+                    for ind, usr in enumerate(data):
+                        lvl = {}
+                        lvl['id'] = usr.id
+                        lvl['name'] = usr.name
+                        lvl['description'] = usr.description
+                        lvl['image'] = BASE_ADDRESS+usr.image
+                        lvl['location'] = usr.location
+                        lvl['created'] = usr.created
+                        usrdata[ind+1] = lvl 
+                    msg['filtereddata'] = usrdata 
+                    print(usrdata)
+                    msg['search'] = 2
+                else:
+                    msg['search'] = 3
+    #url = 'http://127.0.0.1:8000/api-auth/view/'
     try:
         data = getUsersData()
+        print(data)
+        for i in range(len(data)):
+            data[i]['image'] = BASE_ADDRESS + data[i]['image']
         msg['data'] = data
         msg['signal'] = 1
         '''
@@ -156,7 +170,7 @@ def updateUser(request):
         
     except:
         msg['signal'] = 2
-        print('\nError')
+        #print('\nError')
     
     return render(request, 'update.html',msg)
 
@@ -172,19 +186,18 @@ def updatingUser(request):
     msg = {}
     msg['signal'] = -1
     if request.method=='POST':
-        name = request.POST.get('name')
-        age = request.POST.get('age')
         id = request.POST.get('id')
-        print(id,name,age)
-        if id is not None:
-            store_id(id)
+            
         if id:
+            store_id(id)
             try:
                 data = Dog.objects.get(id=id)
                 usrdata = {
                     "id": data.id,
                     "name": data.name,
-                    "age": data.age,
+                    "description": data.description,
+                    "image": BASE_ADDRESS+data.image,
+                    "location": data.location,
                     "created": data.created
                 }
                 msg['data'] = usrdata
@@ -192,23 +205,115 @@ def updatingUser(request):
             except:
                 msg['signal'] = 2
         else:
+            name = request.POST.get('name')
+            description = request.POST.get('description')
+            image = request.FILES.get('image')
+            location = request.POST.get('location')
+            upd_data = {}
+            if name:
+                upd_data['name'] = name
+            if description:
+                upd_data['description'] = description
+            if image:
+                upd_data['image'] = image.name
+            if location:
+                upd_data['location'] = location
+            
+            #upd_data = {"name": name, "description": description, "image":image.name, "location": location}
             #print(UPDATE_ID)
             id = store['id']
+            dog = Dog.objects.get(id=id)
+            prev_imgname = dog.image
+
+            if upd_data.get('image'):
+                FILE_SYSTEM.delete(prev_imgname)
+                #print('deleted')
+                imagename = FILE_SYSTEM.save(image.name, image)
+                upd_data['image'] = imagename
+                #print('saved')
+            else:
+                upd_data['image'] = prev_imgname
+            
+            if not upd_data.get('name'):
+                upd_data['name'] = dog.name
+            if not upd_data.get('description'):
+                upd_data['description'] = dog.description
+            if not upd_data.get('location'):
+                upd_data['location'] = dog.location
             try:
                 url = f'http://127.0.0.1:8000/api-auth/update/{id}/'
-                print(url)
-    
-                response = requests.post(url, data={'name': name, 'age': age})
-                print(response)
+                response = requests.post(url, data=upd_data)
+                #print(response)
                 print(response.json())
-                print('here')
+                data = Dog.objects.get(id=id)
                 msg['signal'] = 3
             except:
                 msg['signal'] = 4
     return render(request, 'updateuser.html', msg)
 
 def deleteUser(request):
-    return render(request, 'delete.html')
+    """ This function deletes a record from the database via the Local API and signals the termination of the process """
+    msg = {}
+    msg['signal'] = 1
+    if request.method=='POST':
+        search = request.POST.get('search')
+        if search:
+            msg['signal'] = -1
+            if search.isdigit():
+                id = int(search)
+                try:
+                    data = Dog.objects.get(id=id)
+                    usrdata = {
+                        "id": data.id,
+                        "name": data.name,
+                        "description": data.description,
+                        "image": BASE_ADDRESS+data.image,
+                        "location": data.location,
+                        "created": data.created
+                    }
+                    msg['search'] = 1
+                    msg['filtereddata'] = usrdata
+                except:
+                    msg['search'] = 3
+            else:
+                data = Dog.objects.filter(name=search)
+                if data:
+                    usrdata = {}
+                    for ind, usr in enumerate(data):
+                        lvl = {}
+                        lvl['id'] = usr.id
+                        lvl['name'] = usr.name
+                        lvl['description'] = usr.description
+                        lvl['image'] = BASE_ADDRESS+usr.image
+                        lvl['location'] = usr.location
+                        lvl['created'] = usr.created
+                        usrdata[ind+1] = lvl 
+                    msg['filtereddata'] = usrdata 
+                    #print(usrdata)
+                    msg['search'] = 2
+                else:
+                    msg['search'] = 3
+        else:
+            id = request.POST.get('id')
+            try:
+                url = f'http://127.0.0.1:8000/api-auth/delete/{id}/'
+                FILE_SYSTEM.delete(Dog.objects.get(id=id).image)
+                response = requests.delete(url)
+                print(response)
+                #print('Record and image deleted')
+                msg['signal'] = 2
+            except:
+                msg['signal'] = 3
+    
+    url = 'http://127.0.0.1:8000/api-auth/view/'
+    response = requests.get(url)
+    data = response.json()
+    for i in range(len(data)):
+        data[i]['image'] = BASE_ADDRESS+data[i]['image']
+    msg['data'] = data
+    #print(data)
+        
+    return render(request, 'delete.html',msg)
 
 
 def getUsersData():
