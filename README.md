@@ -24,6 +24,7 @@
 - [Getting Started](#getting-started)
   - [Installation](#installation)
 - [Usage](#usage)
+- [Contributions](#contributions)
 
 ## Project Breakdown 
 - Building Local API which handles GET, POST and DELETE http requests. 
@@ -100,6 +101,9 @@ Built version:
 The Basic goal is to make street dogs location active through this site. 
 We know that a street dog's location is not fixed but a person who is very near and dear to that dog knows where the dog resides most of the times. 
 And If you happen to go by that location you can just feed the dog or play with that dog if you want.
+
+## Contributions 
+Open for contributions. Just clone and follow the installation. Make changes and raise a PR detailing about the changes made.
 
 ## Future Plans
 - Filter Dogs based on your current location
