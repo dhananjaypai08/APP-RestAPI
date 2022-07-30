@@ -14,7 +14,7 @@ from pathlib import Path
 import os
 from decouple import config
 import django_heroku
-import dj_database_url
+#import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -142,8 +142,9 @@ REST_FRAMEWORK = {'DEFAULT_SCHEMA_CLASS':'rest_framework.schemas.coreapi.AutoSch
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
-
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/' # 'http://myhost:port/media/'
 
-django_heroku.seetings(locals())
+# Activate Django-Heroku.
+django_heroku.settings(locals())
