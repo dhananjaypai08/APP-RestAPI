@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 from pathlib import Path
 import os
 from decouple import config
+import django_heroku
+#import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -22,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config('SECRET_KEY')
+SECRET_KEY = 'django-insecure-*)ocz*(pmw+^4z74w#r&vzbtj0@1!2q15v1y77pvv=aamzeykc'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -43,8 +45,8 @@ INSTALLED_APPS = [
     'core',
     'rest_framework',
     'coreapi',
-    #'rest_framework_swagger',
-    'drf_yasg',
+    'rest_framework_swagger',
+    #'drf_yasg',
 ]
 
 MIDDLEWARE = [
@@ -72,8 +74,8 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'django.template.context_processors.media'
             ],
-            #'libraries': { # Added manually 
-            #'staticfiles' : 'django.templatetags.static', },
+            'libraries': { # Added manually 
+            'staticfiles' : 'django.templatetags.static', },
         },
     },
 ]
@@ -134,12 +136,16 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Added manually for resolving -> AttributeError: 'AutoSchema' object has no attribute 'get_link'
-'''
+
 REST_FRAMEWORK = {'DEFAULT_SCHEMA_CLASS':'rest_framework.schemas.coreapi.AutoSchema' }
-'''
+
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
 
+#STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/' # 'http://myhost:port/media/'
+
+# Activate Django-Heroku.
+django_heroku.settings(locals())

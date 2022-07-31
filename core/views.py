@@ -6,7 +6,7 @@ from django.core.files.storage import FileSystemStorage
 
 # Create your views here.
 
-BASE_ADDRESS = 'http://127.0.0.1:8000/media/'
+BASE_ADDRESS = 'https://127.0.0.1:8000/media/'
 FILE_SYSTEM = FileSystemStorage()
 
 def home(request):
@@ -63,11 +63,12 @@ def listUser(request):
         data = getUsersData()
         for i in range(len(data)):
             data[i]['image'] = BASE_ADDRESS + data[i]['image']
-            
+        print(data)  
         msg['data'] = data
         msg['signal'] = 1
     except:
         msg['signal'] = 2
+    
     return render(request, 'userlist.html', msg)
         
 def listSpecificUser(request):
@@ -98,7 +99,7 @@ def addUser(request):
         imagename = FILE_SYSTEM.save(image.name, image)
         #image_url = FILE_SYSTEM.url(imagename)
         #print(imagename)
-        url = 'http://127.0.0.1:8000/api-auth/add/'
+        url = 'https://127.0.0.1:8000/api-auth/add/'
         try:
             data={"name": name, "description": description, "image": imagename, "location": location}
             reqdata = requests.post(url, data=data)
@@ -108,7 +109,7 @@ def addUser(request):
             msg['added'] = 1
         except:
             msg['added'] = 2
-        
+    
     return render(request, 'add.html', msg)
 
 def updateUser(request):
@@ -157,10 +158,11 @@ def updateUser(request):
     #url = 'http://127.0.0.1:8000/api-auth/view/'
     try:
         data = getUsersData()
-        print(data)
+        
         for i in range(len(data)):
             data[i]['image'] = BASE_ADDRESS + data[i]['image']
         msg['data'] = data
+        print(data)
         msg['signal'] = 1
         '''
         data = response.text
@@ -241,7 +243,7 @@ def updatingUser(request):
             if not upd_data.get('location'):
                 upd_data['location'] = dog.location
             try:
-                url = f'http://127.0.0.1:8000/api-auth/update/{id}/'
+                url = f'https://127.0.0.1:8000/api-auth/update/{id}/'
                 response = requests.post(url, data=upd_data)
                 #print(response)
                 print(response.json())
@@ -296,7 +298,7 @@ def deleteUser(request):
         else:
             id = request.POST.get('id')
             try:
-                url = f'http://127.0.0.1:8000/api-auth/delete/{id}/'
+                url = f'https://127.0.0.1:8000/api-auth/delete/{id}/'
                 FILE_SYSTEM.delete(Dog.objects.get(id=id).image)
                 response = requests.delete(url)
                 print(response)
@@ -305,7 +307,7 @@ def deleteUser(request):
             except:
                 msg['signal'] = 3
     
-    url = 'http://127.0.0.1:8000/api-auth/view/'
+    url = 'https://127.0.0.1:8000/api-auth/view/'
     response = requests.get(url)
     data = response.json()
     for i in range(len(data)):
@@ -318,7 +320,7 @@ def deleteUser(request):
 
 def getUsersData():
     """ This function return all users in the database by simply calling the local API """
-    url = 'http://127.0.0.1:8000/api-auth/view/'
+    url = 'https://127.0.0.1:8000/api-auth/view/'
     data = requests.get(url)
     data = data.json()
     
