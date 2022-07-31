@@ -6,7 +6,7 @@ from django.core.files.storage import FileSystemStorage
 
 # Create your views here.
 
-BASE_ADDRESS = 'http://127.0.0.1:8000/media/'
+BASE_ADDRESS = 'https://dogsnetwork.herokuapp.com/media/'
 FILE_SYSTEM = FileSystemStorage()
 
 def home(request):
@@ -99,7 +99,7 @@ def addUser(request):
         imagename = FILE_SYSTEM.save(image.name, image)
         #image_url = FILE_SYSTEM.url(imagename)
         #print(imagename)
-        url = 'http://127.0.0.1:8000/api-auth/add/'
+        url = 'https://dogsnetwork.herokuapp.com/api-auth/add/'
         try:
             data={"name": name, "description": description, "image": imagename, "location": location}
             reqdata = requests.post(url, data=data)
@@ -242,7 +242,7 @@ def updatingUser(request):
             if not upd_data.get('location'):
                 upd_data['location'] = dog.location
             try:
-                url = f'http://127.0.0.1:8000/api-auth/update/{id}/'
+                url = f'https://dogsnetwork.herokuapp.com/api-auth/update/{id}/'
                 response = requests.post(url, data=upd_data)
                 #print(response)
                 print(response.json())
@@ -297,7 +297,7 @@ def deleteUser(request):
         else:
             id = request.POST.get('id')
             try:
-                url = f'http://127.0.0.1:8000/api-auth/delete/{id}/'
+                url = f'https://dogsnetwork.herokuapp.com/api-auth/delete/{id}/'
                 FILE_SYSTEM.delete(Dog.objects.get(id=id).image)
                 response = requests.delete(url)
                 print(response)
@@ -306,7 +306,7 @@ def deleteUser(request):
             except:
                 msg['signal'] = 3
     
-    url = 'http://127.0.0.1:8000/api-auth/view/'
+    url = 'https://dogsnetwork.herokuapp.com/api-auth/view/'
     response = requests.get(url)
     data = response.json()
     for i in range(len(data)):
@@ -319,7 +319,7 @@ def deleteUser(request):
 
 def getUsersData():
     """ This function return all users in the database by simply calling the local API """
-    url = 'http://127.0.0.1:8000/api-auth/view/'
+    url = 'https://dogsnetwork.herokuapp.com/api-auth/view/'
     data = requests.get(url)
     data = data.json()
     
