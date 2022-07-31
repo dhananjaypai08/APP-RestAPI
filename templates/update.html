@@ -101,7 +101,7 @@
   {% elif signal == 1 %}
         <form method="POST" action="/updateuser/updatinguser/"> {% csrf_token %}
           <div class="input-group mb-3">
-            <input name="id" type="text" class="form-control" placeholder="Enter Id of the User" aria-label="Recipient's id" aria-describedby="basic-addon2">
+            <input name="id" type="text" class="form-control" placeholder="Enter Id of the User" aria-label="Recipient's id" aria-describedby="basic-addon2" required=True>
             <span class="input-group-text" id="basic-addon2">Provide Id of the Dog to be updated.</span>
           </div>
           <button type="submit" class="btn btn-outline-info">Enter</button>

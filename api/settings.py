@@ -29,7 +29,7 @@ SECRET_KEY = 'django-insecure-*)ocz*(pmw+^4z74w#r&vzbtj0@1!2q15v1y77pvv=aamzeykc
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -74,8 +74,8 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'django.template.context_processors.media'
             ],
-            #'libraries': { # Added manually 
-            #'staticfiles' : 'django.templatetags.static', },
+            'libraries': { # Added manually 
+            'staticfiles' : 'django.templatetags.static', },
         },
     },
 ]
@@ -136,13 +136,14 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Added manually for resolving -> AttributeError: 'AutoSchema' object has no attribute 'get_link'
-'''
+
 REST_FRAMEWORK = {'DEFAULT_SCHEMA_CLASS':'rest_framework.schemas.coreapi.AutoSchema' }
-'''
+
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+#STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/' # 'http://myhost:port/media/'
 

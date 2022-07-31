@@ -68,6 +68,7 @@ def listUser(request):
         msg['signal'] = 1
     except:
         msg['signal'] = 2
+    
     return render(request, 'userlist.html', msg)
         
 def listSpecificUser(request):
@@ -108,7 +109,7 @@ def addUser(request):
             msg['added'] = 1
         except:
             msg['added'] = 2
-        
+    
     return render(request, 'add.html', msg)
 
 def updateUser(request):
