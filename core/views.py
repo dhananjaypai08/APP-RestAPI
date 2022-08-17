@@ -68,7 +68,7 @@ def listUser(request):
         msg['signal'] = 1
     except:
         msg['signal'] = 2
-    
+
     return render(request, 'userlist.html', msg)
         
 def listSpecificUser(request):
