@@ -1,4 +1,4 @@
-## Help and Connect with Street Dogs
+## 🐶 Help and Connect with Street Dogs
 
 <!--
 *** Thanks for checking out this README Template. If you have a suggestion that would
@@ -17,7 +17,7 @@
   <a href="https://github.com/dhananjaypai08/APP-RestAPI/tree/dogadoption">Project Link</a>
  </p>
  
- ## Table of Contents
+ ## ✍️ Table of Contents
 - [Project Breakdown](#project-breakdown)
 - [About the Project](#about-the-project)
   - [Built With](#built-with)
@@ -26,19 +26,19 @@
 - [Usage](#usage)
 - [Contributions](#contributions)
 
-## Project Breakdown 
+## 🔨 Project Breakdown 
 - Building Local API which handles GET, POST and DELETE http requests. 
 - Database interaction done by the API.
 - Taking input data from frontend and sending it to Core App.
 - Processing frontend Info and accessing the data using Locally available API.
 - Templating the frontend according to the data received from the backend.
 
-## About The Project
+## 💻 About The Project
 Building a Rest API handling different HTTP requests. Using the API and servicing on data based on user requirements. Create a Dog with its location, details and an
 Image. When a user is passing by that location he can just feed the dog or just say hi to the dog:). Anyone can perform the CRUD operations as everyone 
 should know the info and anyone can add the info about lovely street dogs.
 
-### Built With
+### 🔧 Built With
 - Frontend:
   - HTML
   - Bootstrap
@@ -53,10 +53,10 @@ should know the info and anyone can add the info about lovely street dogs.
     - drf_yasg
   
 
-## Getting Started
+## 🚀 Getting Started
 To get a local copy up and running follow these simple steps.
 
-### Installation
+### 🔨 Installation
 1. Clone the repo
 
 ```sh
@@ -93,7 +93,7 @@ python3 manage.py makemigrations
 python3 manage.py migrate
 ```
 
-## Usage
+## 🧠 Usage
 Built version:
 - Python v3.10.5
 - Django v4.0.1
@@ -102,10 +102,10 @@ The Basic goal is to make street dogs location active through this site.
 We know that a street dog's location is not fixed but a person who is very near and dear to that dog knows where the dog resides most of the times. 
 And If you happen to go by that location you can just feed the dog or play with that dog if you want.
 
-## Contributions 
+## 🤠 Contributions 
 Open for contributions. Just clone and follow the installation. Make changes and raise a PR detailing about the changes made.
 
-## Future Plans
+## 🏃♂️ Future Plans
 - Filter Dogs based on your current location
 - Dog adoption service
 - Search feature more dynamice
