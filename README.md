@@ -108,7 +108,7 @@ Open for contributions. Just clone and follow the installation. Make changes and
 ## 🏃♂️ Future Plans
 - Filter Dogs based on your current location
 - Dog adoption service
-- Search feature more dynamice
+- Search feature more dynamic
 - More details of dogs
 - Individual Page feature for each dog along with an option to provide support
 
