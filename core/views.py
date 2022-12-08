@@ -1,7 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 import requests
 import json
-from apiapp.models import Dog
+from apiapp.models import Dog, User
+from django.core import serializers
 from django.core.files.storage import FileSystemStorage
 
 # Create your views here.
@@ -9,9 +10,52 @@ from django.core.files.storage import FileSystemStorage
 BASE_ADDRESS = 'http://127.0.0.1:8000/media/'
 FILE_SYSTEM = FileSystemStorage()
 
+def login(request):
+    """ This functions is used for validating user """
+    msg = {}
+    if request.session.get('user_id'):
+        return redirect(home)
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        users = User.objects.filter(email=email)
+        for user in users:
+            if user.password == password:
+                request.session['user_id'] = user.id
+                msg['status'] = 1
+                return redirect(home)
+        msg['status'] = 0
+    return render(request, 'login.html')
+
+def logout(request):
+    del request.session['user_id']
+    return redirect(login)
+
+def register(request):
+    """ This is the registeration page for new users """
+    msg = {}
+    if request.session.get('user_id'):
+        return redirect(home)
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        data = {"username": username, "email": email, "password": password}
+        url = 'http://127.0.0.1:8000/api-auth/register/'
+        try:
+            reqdata = requests.post(url, data=data)
+            print(reqdata)
+            msg['saved'] = 1
+            return redirect(login)
+        except:
+            msg['saved'] = 0
+    return render(request, 'register.html')
+
 def home(request):
     """ This is the root function for the core app """
-    return render(request, 'index.html')
+    if request.session.get('user_id'):
+        return render(request, 'index.html')
+    return redirect(login)
 
 def listUser(request):
     """ This function is used for viewing and searching the data elements """
@@ -95,13 +139,14 @@ def addUser(request):
         description = request.POST.get('description')
         image = request.FILES.get('image')
         location = request.POST.get('location')
-    
+        user = User.objects.get(id=request.session['user_id'])
         imagename = FILE_SYSTEM.save(image.name, image)
         #image_url = FILE_SYSTEM.url(imagename)
         #print(imagename)
         url = 'http://127.0.0.1:8000/api-auth/add/'
         try:
-            data={"name": name, "description": description, "image": imagename, "location": location}
+            data={"name": name, "description": description, "image": imagename, "location": location, "user": user.id}
+            print(data)
             reqdata = requests.post(url, data=data)
             #print(reqdata) # Response code
             data = reqdata.json()
@@ -157,10 +202,13 @@ def updateUser(request):
                     msg['search'] = 3
     #url = 'http://127.0.0.1:8000/api-auth/view/'
     try:
-        data = getUsersData()
-        
+        #data = getUsersData()
+        data = serializers.serialize('json', Dog.objects.filter(user=request.session['user_id']))
+        print(data)
         for i in range(len(data)):
-            data[i]['image'] = BASE_ADDRESS + data[i]['image']
+            #data[i]['image'] = BASE_ADDRESS + data[i]['image']
+            print(data[i])
+            data[i]['fields']['image'] = BASE_ADDRESS + data[i]['fields']['image']
         msg['data'] = data
         print(data)
         msg['signal'] = 1

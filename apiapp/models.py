@@ -8,7 +8,15 @@ class Dog(models.Model):
     #image = models.ImageField(upload_to='images/', null=True, default="Image not found")
     image = models.TextField(default="Image not found")
     location = models.TextField(default=None)
+    user = models.ForeignKey("User", on_delete=models.CASCADE, default=False)
     created = models.DateTimeField(auto_now_add=True)
+    
+    
+class User(models.Model):
+    id = models.AutoField(primary_key=True)
+    username = models.CharField(max_length=200)
+    email = models.EmailField()
+    password = models.TextField(default=False)
     
     def __str__(self):
         self.id = id

@@ -1,12 +1,16 @@
-from rest_framework.test import APITestCase
+from rest_framework.test import APITestCase, RequestsClient
 from rest_framework import status
 
 from apiapp.models import Dog
 from apiapp.serializers import DogSerializer
 
-from django.http.request import QueryDict
+import json
 
-class AddDogTestCase(APITestCase):
+
+class AddDogTestCase(RequestsClient):
+    def __init__(self):
+        self.client = RequestsClient()
+        self.client = APITestCase()
     
     def test_add_dog(self):
         data = {
@@ -15,5 +19,5 @@ class AddDogTestCase(APITestCase):
             "image": "image location",
             "location": "kalyan west"
         }
-        response = self.client.post("api-auth/add/", data)
+        response = self.client.post("api-auth/add/", data, format='')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)

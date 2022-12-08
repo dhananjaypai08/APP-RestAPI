@@ -1,8 +1,8 @@
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from apiapp import serializers
-from apiapp.models import Dog
-from apiapp.serializers import DogSerializer
+from apiapp.models import Dog, User
+from apiapp.serializers import DogSerializer, UserSerializer
 
 # Create your views here.
 
@@ -12,6 +12,7 @@ def showPatterns(request):
     """ This function shows all the url patterns made available by this API """
     urlpatterns = {  
     '': 'urlpatterns',
+    'Register': 'api-auth/register/',
     'View data': 'api-auth/view/',
     'Swagger UI': 'swagger/',
     'View specific data': 'api-auth/view/<str:name>',
@@ -20,6 +21,17 @@ def showPatterns(request):
     'Delete data': 'api-auth/delete/<str:name>',
     }
     return Response(urlpatterns)
+
+@api_view(['POST'])
+def register(request):
+    """ This function is used to save the new users data in database """
+    serializer = UserSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        print('saved')
+        data = serializer.data    
+        return Response(data)
+    return Response("Item not Added")
 
 @api_view(['GET'])
 def getData(request):
