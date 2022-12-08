@@ -4,10 +4,15 @@ import json
 from apiapp.models import Dog, User
 from django.core import serializers
 from django.core.files.storage import FileSystemStorage
+from decouple import config
 
 # Create your views here.
-
-BASE_ADDRESS = 'http://127.0.0.1:8000/media/'
+if config('environ') == 'prod':
+    BASE_ADDRESS = 'http://dhananjaywho.pythonanywhere.com/media/'
+    ROOT_ADDRESS = 'http://dhananjaywho.pythonanywhere.com/'
+else:
+    BASE_ADDRESS = 'http://127.0.0.1:8000/media/'
+    ROOT_ADDRESS = 'http://127.0.0.1:8000/'
 #BASE_ADDRESS = 'https://dhananjaywho.pythonanywhere.com/media/'
 FILE_SYSTEM = FileSystemStorage()
 
@@ -43,7 +48,7 @@ def register(request):
         email = request.POST.get('email')
         password = request.POST.get('password')
         data = {"username": username, "email": email, "password": password}
-        url = 'http://127.0.0.1:8000/api-auth/register/'
+        url = ROOT_ADDRESS+'api-auth/register/'
         #url = 'https://dhananjaywho.pythonanywhere.com/api-auth/register/'
         try:
             reqdata = requests.post(url, data=data)
@@ -155,7 +160,7 @@ def addUser(request):
             imagename = FILE_SYSTEM.save(image.name, image)
             #image_url = FILE_SYSTEM.url(imagename)
             #print(imagename)
-            url = 'http://127.0.0.1:8000/api-auth/add/'
+            url = ROOT_ADDRESS+'api-auth/add/'
             #url = 'https://dhananjaywho.pythonanywhere.com/api-auth/add/'
             try:
                 data={"name": name, "description": description, "image": imagename, "location": location, "user": user.id}
@@ -316,7 +321,7 @@ def updatingUser(request):
                 if not upd_data.get('location'):
                     upd_data['location'] = dog.location
                 try:
-                    url = f'http://127.0.0.1:8000/api-auth/update/{id}/'
+                    url = f'{ROOT_ADDRESS}api-auth/update/{id}/'
                     #url = f'https://dhananjaywho.pythonanywhere.com/api-auth/update/{id}'
                     response = requests.post(url, data=upd_data)
                     #print(response)
@@ -377,7 +382,7 @@ def deleteUser(request):
                 try:
                     dog = Dog.objects.get(id=id)
                     if dog.user.id == request.session['user_id']:
-                        url = f'http://127.0.0.1:8000/api-auth/delete/{id}/'
+                        url = f'{ROOT_ADDRESS}api-auth/delete/{id}/'
                         #url = f'https://dhananjaywho.pythonanywhere.com/api-auth/delete/{id}'
                         FILE_SYSTEM.delete(Dog.objects.get(id=id).image)
                         response = requests.delete(url)
@@ -390,7 +395,7 @@ def deleteUser(request):
                 except:
                     msg['signal'] = 3
         
-        url = 'http://127.0.0.1:8000/api-auth/view/'
+        url = ROOT_ADDRESS+'api-auth/view/'
         #url = 'https://dhananjaywho.pythonanywhere.com/api-auth/view/'
         response = requests.get(url)
         data = response.json()
@@ -409,7 +414,7 @@ def deleteUser(request):
 
 def getUsersData():
     """ This function return all users in the database by simply calling the local API """
-    url = 'http://127.0.0.1:8000/api-auth/view/'
+    url = ROOT_ADDRESS+'api-auth/view/'
     #url = 'https://dhananjaywho.pythonanywhere.com/api-auth/view/'
     data = requests.get(url)
     data = data.json()
