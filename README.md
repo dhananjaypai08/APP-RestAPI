@@ -12,9 +12,9 @@
     <br />
     <a href="https://www.djangoproject.com/"><strong>Learn more about Django »</strong></a>
     <br />
-    <a href="https://github.com/dhananjaypai08/APP-RestAPI/issues">Report Bug</a>
+    <a href="https://github.com/dhananjaypai08/Dogs-activity/issues">Report Bug</a>
     <br />
-  <a href="https://github.com/dhananjaypai08/APP-RestAPI/tree/dogadoption">Project Link</a>
+  <a href="https://github.com/dhananjaypai08/Dogs-activity">Project Link</a>
  </p>
  
  ## ✍️ Table of Contents
@@ -60,7 +60,7 @@ To get a local copy up and running follow these simple steps.
 1. Clone the repo
 
 ```sh
-git clone https://github.com/dhananjaypai08/APP-RestAPI/
+git clone https://github.com/dhananjaypai08/Dogs-activity/
 ```
 
 2. Create a Virtual Environment and activate
@@ -78,7 +78,7 @@ deactivate
 3. Installing dependencies and requirements
 
 ```sh
-cd APP-RestAPI
+cd Dogs-activity
 pip3 install -r requirements.txt
 ```
 
