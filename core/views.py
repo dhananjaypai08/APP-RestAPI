@@ -8,8 +8,8 @@ from decouple import config
 
 # Create your views here.
 if config('environ') == 'prod':
-    BASE_ADDRESS = 'http://dhananjaywho.pythonanywhere.com/media/'
-    ROOT_ADDRESS = 'http://dhananjaywho.pythonanywhere.com/'
+    BASE_ADDRESS = 'https://dhananjaywho.pythonanywhere.com/media/'
+    ROOT_ADDRESS = 'https://dhananjaywho.pythonanywhere.com/'
 else:
     BASE_ADDRESS = 'http://127.0.0.1:8000/media/'
     ROOT_ADDRESS = 'http://127.0.0.1:8000/'
