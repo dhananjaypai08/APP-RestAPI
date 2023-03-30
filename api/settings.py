@@ -13,7 +13,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 from pathlib import Path
 import os
 from decouple import config
-import django_heroku
+#import django_heroku
 #import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -151,4 +151,4 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/' # 'http://myhost:port/media/'
 
 # Activate Django-Heroku.
-django_heroku.settings(locals())
+#django_heroku.settings(locals())
