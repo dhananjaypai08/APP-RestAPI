@@ -8,7 +8,7 @@ from decouple import config
 
 # Create your views here.
 if config('environ') == 'prod':
-    BASE_ADDRESS = 'http://13.235.87.29:8000/media/dog.jpeg'
+    BASE_ADDRESS = 'http://13.235.87.29:8000/media/'
     ROOT_ADDRESS = 'http://13.235.87.29:8000/'
 else:
     BASE_ADDRESS = 'http://127.0.0.1:8000/media/'
