@@ -5,15 +5,15 @@ from apiapp.models import Dog, User
 from django.core import serializers
 from django.core.files.storage import FileSystemStorage
 from decouple import config
+from functools import lru_cache
 
-# Create your views here.
 if config('environ') == 'prod':
     BASE_ADDRESS = 'http://13.235.87.29:8000/media/'
     ROOT_ADDRESS = 'http://13.235.87.29:8000/'
 else:
     BASE_ADDRESS = 'http://127.0.0.1:8000/media/'
     ROOT_ADDRESS = 'http://127.0.0.1:8000/'
-#BASE_ADDRESS = 'https://dhananjaywho.pythonanywhere.com/media/'
+
 FILE_SYSTEM = FileSystemStorage()
 
 def login(request):
@@ -21,6 +21,7 @@ def login(request):
     msg = {}
     if request.session.get('user_id'):
         return redirect(home)
+    
     if request.method == 'POST':
         email = request.POST.get('email')
         password = request.POST.get('password')
@@ -31,7 +32,8 @@ def login(request):
                 msg['status'] = 1
                 return redirect(home)
         msg['status'] = 0
-    return render(request, 'login.html')
+        
+    return render(request, 'login.html', msg)
 
 
 def logout(request):
@@ -49,14 +51,15 @@ def register(request):
         password = request.POST.get('password')
         data = {"username": username, "email": email, "password": password}
         url = ROOT_ADDRESS+'api-auth/register/'
-        #url = 'https://dhananjaywho.pythonanywhere.com/api-auth/register/'
+        
         try:
             reqdata = requests.post(url, data=data)
-            print(reqdata)
+        
             msg['saved'] = 1
             return redirect(login)
         except:
             msg['saved'] = 0
+            
     return render(request, 'register.html')
 
 
@@ -66,7 +69,7 @@ def home(request):
         return render(request, 'index.html')
     return redirect(login)
 
-
+@lru_cache()
 def listUser(request):
     """ This function is used for viewing and searching the data elements """
     msg = {}
@@ -93,7 +96,6 @@ def listUser(request):
                 except:
                     msg['search'] = 3
                 
-                #print(msg)
             else:
                 name = search
                 data = Dog.objects.filter(name=name)
@@ -113,7 +115,7 @@ def listUser(request):
                         usrdata[ind+1] = lvl
                     msg['search'] = 2
                     msg['filtereddata'] = usrdata
-                    #print(msg['filtereddata'])
+
         try:
             data = getUsersData()
             print(data)
@@ -133,15 +135,16 @@ def listSpecificUser(request):
     """ This was made with the view of creating a seperate profile for each instance """
     if request.session.get('user_id'):
         return render(request, 'listSpecificUser.html')
+    
     return redirect(login)
 
-
+@lru_cache()
 def addUser(request):
     """ This function adds the new data to the database using the local API """
     msg = {}
     msg['added'] = 0
     if request.session.get('user_id'):
-        #form = DogImageForm()
+        
         if request.method=='POST':
             '''
             form = DogImageForm(request.POST, request.FILES)
@@ -158,17 +161,12 @@ def addUser(request):
             location = request.POST.get('location')
             user = User.objects.get(id=request.session['user_id'])
             imagename = FILE_SYSTEM.save(image.name, image)
-            #image_url = FILE_SYSTEM.url(imagename)
-            #print(imagename)
             url = ROOT_ADDRESS+'api-auth/add/'
-            #url = 'https://dhananjaywho.pythonanywhere.com/api-auth/add/'
+
             try:
                 data={"name": name, "description": description, "image": imagename, "location": location, "user": user.id}
-                print(data)
                 reqdata = requests.post(url, data=data)
-                #print(reqdata) # Response code
                 data = reqdata.json()
-                #print(data)
                 msg['added'] = 1
             except:
                 msg['added'] = 2
@@ -176,7 +174,7 @@ def addUser(request):
         return render(request, 'add.html', msg)
     return redirect(login)
 
-
+@lru_cache()
 def updateUser(request):
     """ This function provides the connectivity to `updatingUser` function """
     msg = {}
@@ -221,7 +219,7 @@ def updateUser(request):
                         msg['search'] = 2
                     else:
                         msg['search'] = 3
-        #url = 'http://127.0.0.1:8000/api-auth/view/'
+
         try:
             data = getUsersData()
             filtered_data = []
@@ -233,17 +231,10 @@ def updateUser(request):
                 filtered_data[i]['image'] = BASE_ADDRESS + filtered_data[i]['image']
             
             msg['data'] = filtered_data
-            print(filtered_data)
             msg['signal'] = 1
-            '''
-            data = response.text
-            jsondata = json.loads(data)
-            actualdata = jsondata[0]
-            '''
             
         except:
             msg['signal'] = 2
-            #print('\nError')
         
         return render(request, 'update.html',msg)
     return redirect(login)
@@ -290,6 +281,7 @@ def updatingUser(request):
                 image = request.FILES.get('image')
                 location = request.POST.get('location')
                 upd_data = {}
+                
                 if name:
                     upd_data['name'] = name
                 if description:
@@ -298,19 +290,15 @@ def updatingUser(request):
                     upd_data['image'] = image.name
                 if location:
                     upd_data['location'] = location
-                
-                #upd_data = {"name": name, "description": description, "image":image.name, "location": location}
-                #print(UPDATE_ID)
+
                 id = store['id']
                 dog = Dog.objects.get(id=id)
                 prev_imgname = dog.image
 
                 if upd_data.get('image'):
                     FILE_SYSTEM.delete(prev_imgname)
-                    #print('deleted')
                     imagename = FILE_SYSTEM.save(image.name, image)
                     upd_data['image'] = imagename
-                    #print('saved')
                 else:
                     upd_data['image'] = prev_imgname
                 
@@ -320,20 +308,20 @@ def updatingUser(request):
                     upd_data['description'] = dog.description
                 if not upd_data.get('location'):
                     upd_data['location'] = dog.location
+                    
                 try:
                     url = f'{ROOT_ADDRESS}api-auth/update/{id}/'
-                    #url = f'https://dhananjaywho.pythonanywhere.com/api-auth/update/{id}'
                     response = requests.post(url, data=upd_data)
-                    #print(response)
-                    print(response.json())
                     data = Dog.objects.get(id=id)
                     msg['signal'] = 3
                 except:
                     msg['signal'] = 4
         return render(request, 'updateuser.html', msg)
+    
     return redirect(login)
 
 
+@lru_cache()
 def deleteUser(request):
     """ This function deletes a record from the database via the Local API and signals the termination of the process """
     msg = {}
@@ -373,21 +361,18 @@ def deleteUser(request):
                             lvl['created'] = usr.created
                             usrdata[ind+1] = lvl 
                         msg['filtereddata'] = usrdata 
-                        #print(usrdata)
                         msg['search'] = 2
                     else:
                         msg['search'] = 3
             else:
                 id = request.POST.get('id')
+                
                 try:
                     dog = Dog.objects.get(id=id)
                     if dog.user.id == request.session['user_id']:
                         url = f'{ROOT_ADDRESS}api-auth/delete/{id}/'
-                        #url = f'https://dhananjaywho.pythonanywhere.com/api-auth/delete/{id}'
                         FILE_SYSTEM.delete(Dog.objects.get(id=id).image)
                         response = requests.delete(url)
-                        print(response)
-                        #print('Record and image deleted')
                         msg['signal'] = 2
                     else:
                         msg['signal'] = 4
@@ -396,7 +381,6 @@ def deleteUser(request):
                     msg['signal'] = 3
         
         url = ROOT_ADDRESS+'api-auth/view/'
-        #url = 'https://dhananjaywho.pythonanywhere.com/api-auth/view/'
         response = requests.get(url)
         data = response.json()
         filtered_data = []
@@ -406,7 +390,6 @@ def deleteUser(request):
         for i in range(len(filtered_data)):
             filtered_data[i]['image'] = BASE_ADDRESS+filtered_data[i]['image']
         msg['data'] = filtered_data
-        #print(data)
         
         return render(request, 'delete.html',msg)
     return redirect(login)
@@ -415,7 +398,6 @@ def deleteUser(request):
 def getUsersData():
     """ This function return all users in the database by simply calling the local API """
     url = ROOT_ADDRESS+'api-auth/view/'
-    #url = 'https://dhananjaywho.pythonanywhere.com/api-auth/view/'
     data = requests.get(url)
     data = data.json()
     

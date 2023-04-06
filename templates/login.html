@@ -12,6 +12,13 @@
   </head>
   <body>
       <div class="container">
+        <br>
+          {% if status == 0%}
+          <div class="alert alert-danger" role="alert">
+            Email or password Incorrect
+          </div>
+          {% endif %}
+        
         <h2>Login</h2>
         <form action="/" method="post">
             {% csrf_token %}

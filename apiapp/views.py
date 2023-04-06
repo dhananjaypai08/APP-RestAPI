@@ -4,7 +4,6 @@ from apiapp import serializers
 from apiapp.models import Dog, User
 from apiapp.serializers import DogSerializer, UserSerializer
 
-# Create your views here.
 
 
 @api_view(['GET'])
