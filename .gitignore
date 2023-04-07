@@ -1,4 +1,8 @@
 /.env
 /env/
 env/
-/__pycache__/
+__pycache__/
+apiapp/middleware/__pycache__/
+core/migrations/__pycache__/
+__pycache__*
+*.pyc
