@@ -162,7 +162,11 @@
             <p class="card-text">
               <mark>Added on:</mark> <strong>{{dic.created}}</strong>
             </p>
+            <p class="card-text">
+              <mark>Likes:</mark> <strong><button type="button" class="btn btn-dark" id="likes()" onClick="Likes({{dic.id}})">{{dic.likes}}</button></strong>
+            </p>
           </div>
+          
         </div>
 
         {% endfor %}
@@ -174,6 +178,27 @@
       <br>
       {% endif %}
     </div>
+    <script type ="text/javascript">
+      function Likes(dog_id){
+        let request = new XMLHttpRequest();
+        request.open("GET", `http://127.0.0.1:8000/api-auth/likes/${dog_id}`)
+        request.send();
+        let count;
+        request.onload = () => {
+          console.log(request);
+          if (request.status == 200){
+            let count = JSON.parse(request.response);
+            console.log(count);
+            document.getElementById('likes').value = count;
+            
+          }
+          else{
+             console.log(`error ${request.status} ${request.statusText}`)
+          }
+        };
+        
+      }
+    </script>
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"

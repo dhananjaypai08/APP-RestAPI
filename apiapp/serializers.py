@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from apiapp.models import Dog, User
+from apiapp.models import Dog, User, Like
 from django import forms 
 
 class DogSerializer(serializers.ModelSerializer):
@@ -18,4 +18,9 @@ class DogImageForm(forms.ModelForm):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
+        fields = '__all__'
+        
+class LikeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Like
         fields = '__all__'

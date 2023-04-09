@@ -1,8 +1,8 @@
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from apiapp import serializers
-from apiapp.models import Dog, User
-from apiapp.serializers import DogSerializer, UserSerializer
+from apiapp.models import Dog, User, Like
+from apiapp.serializers import DogSerializer, UserSerializer, LikeSerializer
 
 
 
@@ -78,3 +78,25 @@ def deleteData(request, id):
     person = Dog.objects.get(id=id)
     person.delete()
     return Response('Item Deleted')
+
+@api_view(['GET'])
+def addlikes(request, dog_id):
+    """ This function is used to store likes of Dogs """
+    user_id = request.session.get("user_id")
+    if user_id:
+        user = User.objects.get(id=user_id)
+        dog = Dog.objects.get(id=dog_id)
+        likes = Like.objects.filter(user=user, dog=dog)
+        if len(likes)>0:
+            pass 
+        else:
+            dog.likes += 1
+            dog.save()
+            likes = Like(user=user, dog=dog)
+            likes.save()
+        return Response(dog.likes)
+    else:
+        return Response("Something went wrong")
+            
+        
+        

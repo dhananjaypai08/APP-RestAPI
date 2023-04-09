@@ -31,4 +31,5 @@ urlpatterns = [
     path('update/<int:id>/', views.updateData, name='updatedata'),
     path('add/', views.addData, name='adddata'),
     path('delete/<int:id>/', views.deleteData, name='deletedata'),
+    path('likes/<int:dog_id>/', views.addlikes, name='likes'),
 ]

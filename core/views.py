@@ -6,6 +6,7 @@ from django.core import serializers
 from django.core.files.storage import FileSystemStorage
 from decouple import config
 from functools import lru_cache
+from hashlib import sha256
 
 if config('environ') == 'prod':
     BASE_ADDRESS = 'http://13.235.87.29:8000/media/'
@@ -25,9 +26,10 @@ def login(request):
     if request.method == 'POST':
         email = request.POST.get('email')
         password = request.POST.get('password')
+        hash = sha256(password.encode()).hexdigest()
         users = User.objects.filter(email=email)
         for user in users:
-            if user.password == password:
+            if user.password == hash:
                 request.session['user_id'] = user.id
                 msg['status'] = 1
                 return redirect(home)
@@ -49,7 +51,8 @@ def register(request):
         username = request.POST.get('username')
         email = request.POST.get('email')
         password = request.POST.get('password')
-        data = {"username": username, "email": email, "password": password}
+        hash = sha256(password.encode()).hexdigest()
+        data = {"username": username, "email": email, "password": hash}
         url = ROOT_ADDRESS+'api-auth/register/'
         
         try:
@@ -89,6 +92,7 @@ def listUser(request):
                         "description": data.description,
                         "image": BASE_ADDRESS+data.image,
                         "location": data.location,
+                        "likes": data.likes,
                         "created": data.created
                     }
                     msg['search'] = 1
@@ -111,6 +115,7 @@ def listUser(request):
                         lvl['description'] = usr.description
                         lvl['image'] = BASE_ADDRESS+usr.image
                         lvl['location'] = usr.location
+                        lvl['likes'] = usr.likes
                         lvl['created'] = usr.created
                         usrdata[ind+1] = lvl
                     msg['search'] = 2

@@ -9,6 +9,7 @@ class Dog(models.Model):
     image = models.TextField(default="Image not found")
     location = models.TextField(default=None)
     user = models.ForeignKey("User", on_delete=models.CASCADE, default=False)
+    likes = models.IntegerField(default=0)
     created = models.DateTimeField(auto_now_add=True)
     
     
@@ -20,3 +21,10 @@ class User(models.Model):
     
     def __str__(self):
         self.id = id
+        
+class Like(models.Model):
+    id = models.AutoField(primary_key=True)
+    dog = models.ForeignKey("Dog", on_delete=models.CASCADE, default=False)
+    user = models.ForeignKey("User", on_delete=models.CASCADE, default=False)
+    liked = models.DateTimeField(auto_now_add=True)
+    
