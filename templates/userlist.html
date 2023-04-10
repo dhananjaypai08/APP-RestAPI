@@ -163,7 +163,7 @@
               <mark>Added on:</mark> <strong>{{dic.created}}</strong>
             </p>
             <p class="card-text">
-              <mark>Likes:</mark> <strong><button type="button" class="btn btn-dark" id="likes()" onClick="Likes({{dic.id}})">{{dic.likes}}</button></strong>
+              <mark>Likes:</mark> <strong><button type="button" class="btn btn-dark" id="likes" onClick="Likes({{dic.id}})">{{dic.likes}}</button></strong>
             </p>
           </div>
           
@@ -184,18 +184,27 @@
         request.open("GET", `http://127.0.0.1:8000/api-auth/likes/${dog_id}`)
         request.send();
         let count;
+        let flg = 0;
         request.onload = () => {
           console.log(request);
           if (request.status == 200){
-            let count = JSON.parse(request.response);
-            console.log(count);
-            document.getElementById('likes').value = count;
-            
+            let resp = JSON.parse(request.response);
+            count = resp['likes'];
+            flg = resp['flg'];
+            console.log(count, flg);
+            document.getElementById('likes').innerHTML = count;
           }
           else{
              console.log(`error ${request.status} ${request.statusText}`)
           }
         };
+        /*
+        let val = Number(document.getElementById('likes').innerHTML);
+        if(flg == 1){
+          document.getElementById('likes').innerHTML = val+1;
+          console.log('incremented');
+        }
+        */
         
       }
     </script>

@@ -87,6 +87,7 @@ def addlikes(request, dog_id):
         user = User.objects.get(id=user_id)
         dog = Dog.objects.get(id=dog_id)
         likes = Like.objects.filter(user=user, dog=dog)
+        flg = 0
         if len(likes)>0:
             pass 
         else:
@@ -94,7 +95,8 @@ def addlikes(request, dog_id):
             dog.save()
             likes = Like(user=user, dog=dog)
             likes.save()
-        return Response(dog.likes)
+            flg = 1
+        return Response({"likes": dog.likes, "flg": flg})
     else:
         return Response("Something went wrong")
             
