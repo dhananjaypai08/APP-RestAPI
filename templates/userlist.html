@@ -163,7 +163,7 @@
               <mark>Added on:</mark> <strong>{{dic.created}}</strong>
             </p>
             <p class="card-text">
-              <mark>Likes:</mark> <strong><button type="button" class="btn btn-dark" id="likes" onClick="Likes({{dic.id}})">{{dic.likes}}</button></strong>
+              <mark>Likes:</mark> <strong><button type="button" class="btn btn-dark" id="likes{{dic.id}}" onClick="Likes({{dic.id}})">{{dic.likes}}</button></strong>
             </p>
           </div>
           
@@ -179,33 +179,24 @@
       {% endif %}
     </div>
     <script type ="text/javascript">
+      // function defined for incrementing the likes
       function Likes(dog_id){
-        let request = new XMLHttpRequest();
-        request.open("GET", `http://127.0.0.1:8000/api-auth/likes/${dog_id}`)
-        request.send();
-        let count;
-        let flg = 0;
-        request.onload = () => {
-          console.log(request);
-          if (request.status == 200){
-            let resp = JSON.parse(request.response);
-            count = resp['likes'];
-            flg = resp['flg'];
-            console.log(count, flg);
-            document.getElementById('likes').innerHTML = count;
+        async function getLikes(dog_id){
+          const options = {
+            method: "GET"
           }
-          else{
-             console.log(`error ${request.status} ${request.statusText}`)
+          try{
+            const response = await fetch(`http://127.0.0.1:8000/api-auth/likes/${dog_id}`, options);
+            const data = await response.json();
+            console.log(data);
+            const likes = data['likes'];
+            document.getElementById(`likes${dog_id}`).innerHTML = likes;
+          } catch(error){
+            console.log(error);
           }
-        };
-        /*
-        let val = Number(document.getElementById('likes').innerHTML);
-        if(flg == 1){
-          document.getElementById('likes').innerHTML = val+1;
-          console.log('incremented');
+
         }
-        */
-        
+        getLikes(dog_id);
       }
     </script>
     <script

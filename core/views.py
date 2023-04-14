@@ -199,6 +199,7 @@ def updateUser(request):
                             "description": data.description,
                             "image": BASE_ADDRESS+data.image,
                             "location": data.location,
+                            "likes": data.likes,
                             "created": data.created
                         }
                         msg['search'] = 1
@@ -217,6 +218,7 @@ def updateUser(request):
                             lvl['description'] = usr.description
                             lvl['image'] = BASE_ADDRESS+usr.image
                             lvl['location'] = usr.location
+                            lvl['likes'] = usr.likes
                             lvl['created'] = usr.created
                             usrdata[ind+1] = lvl 
                         msg['filtereddata'] = usrdata 
@@ -271,6 +273,7 @@ def updatingUser(request):
                             "description": data.description,
                             "image": BASE_ADDRESS+data.image,
                             "location": data.location,
+                            "likes": data.likes,
                             "created": data.created
                         }
                         msg['data'] = usrdata
@@ -346,6 +349,7 @@ def deleteUser(request):
                             "description": data.description,
                             "image": BASE_ADDRESS+data.image,
                             "location": data.location,
+                            "likes": data.likes,
                             "created": data.created
                         }
                         msg['search'] = 1
@@ -363,6 +367,7 @@ def deleteUser(request):
                             lvl['description'] = usr.description
                             lvl['image'] = BASE_ADDRESS+usr.image
                             lvl['location'] = usr.location
+                            lvl['likes'] = usr.likes
                             lvl['created'] = usr.created
                             usrdata[ind+1] = lvl 
                         msg['filtereddata'] = usrdata 
