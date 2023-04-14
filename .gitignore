@@ -2,6 +2,7 @@
 /env/
 env/
 .env
+*.env
 __pycache__/
 apiapp/middleware/__pycache__/
 core/migrations/__pycache__/
