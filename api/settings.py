@@ -87,7 +87,7 @@ WSGI_APPLICATION = 'api.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'dogs',
+        'NAME': 'dogs-db',
         'HOST': 'dogs-db.cqm81hkg7wbe.ap-south-1.rds.amazonaws.com',
         'USER': 'admin',
         'PASSWORD': 'May#2002',
