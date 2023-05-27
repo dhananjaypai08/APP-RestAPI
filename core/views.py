@@ -9,8 +9,8 @@ from functools import lru_cache
 from hashlib import sha256
 
 if config('environ') == 'prod':
-    BASE_ADDRESS = 'http://13.233.19.201:8000/media/'
-    ROOT_ADDRESS = 'http://13.233.19.201:8000/'
+    BASE_ADDRESS = 'http://15.206.88.70:8000/media/'
+    ROOT_ADDRESS = 'http://15.206.88.70:8000/'
 else:
     BASE_ADDRESS = 'http://127.0.0.1:8000/media/'
     ROOT_ADDRESS = 'http://127.0.0.1:8000/'

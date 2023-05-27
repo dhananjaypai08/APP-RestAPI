@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 from pathlib import Path
 import os
 from decouple import config
+from django.core.management.commands.runserver import Command as runserver
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -30,6 +31,8 @@ DEBUG = True
 #ALLOWED_HOSTS = ['127.0.0.1', 'dogsnetwork.herokuapp.com']
 ALLOWED_HOSTS = ['*']
 
+runserver.default_port = '8000'
+runserver.default_addr = '0.0.0.0'
 # Application definition
 
 INSTALLED_APPS = [
@@ -84,22 +87,22 @@ WSGI_APPLICATION = 'api.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'dogsdb',
-        'HOST': 'dogsdb.cqm81hkg7wbe.ap-south-1.rds.amazonaws.com',
-        'USER': 'admin',
-        'PASSWORD': 'May#2002',
-        'PORT': '3306',
-    }
-}
 # DATABASES = {
 #     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'dogsdb',
+#         'HOST': 'dogsdb.cqm81hkg7wbe.ap-south-1.rds.amazonaws.com',
+#         'USER': 'admin',
+#         'PASSWORD': 'May#2002',
+#         'PORT': '3306',
 #     }
 # }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
 
 
 # Password validation
