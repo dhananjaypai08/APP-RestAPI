@@ -7,6 +7,9 @@ from django.core.files.storage import FileSystemStorage
 from decouple import config
 from functools import lru_cache
 from hashlib import sha256
+import cloudinary.uploader
+from cloudinary import CloudinaryImage
+
 
 if config('environ') == 'prod':
     BASE_ADDRESS = 'http://13.233.19.201:8000/media/'
@@ -90,7 +93,7 @@ def listUser(request):
                         "id": data.id,
                         "name": data.name,
                         "description": data.description,
-                        "image": BASE_ADDRESS+data.image,
+                        "image": data.image,
                         "location": data.location,
                         "likes": data.likes,
                         "created": data.created
@@ -113,7 +116,7 @@ def listUser(request):
                         lvl['id'] = usr.id
                         lvl['name'] = usr.name
                         lvl['description'] = usr.description
-                        lvl['image'] = BASE_ADDRESS+usr.image
+                        lvl['image'] = usr.image
                         lvl['location'] = usr.location
                         lvl['likes'] = usr.likes
                         lvl['created'] = usr.created
@@ -124,8 +127,6 @@ def listUser(request):
         try:
             data = getUsersData()
             print(data)
-            for i in range(len(data)):
-                data[i]['image'] = BASE_ADDRESS + data[i]['image']
             print(data)  
             msg['data'] = data
             msg['signal'] = 1
@@ -143,7 +144,6 @@ def listSpecificUser(request):
     
     return redirect(login)
 
-@lru_cache()
 def addUser(request):
     """ This function adds the new data to the database using the local API """
     msg = {}
@@ -165,11 +165,15 @@ def addUser(request):
             image = request.FILES.get('image')
             location = request.POST.get('location')
             user = User.objects.get(id=request.session['user_id'])
-            imagename = FILE_SYSTEM.save(image.name, image)
+            result = cloudinary.uploader.upload(image, 
+                                        public_id = image.name)
+            print(result)
+            image = result['url']
+            #imagename = FILE_SYSTEM.save(image.name, image)
             url = ROOT_ADDRESS+'api-auth/add/'
 
             try:
-                data={"name": name, "description": description, "image": imagename, "location": location, "user": user.id}
+                data={"name": name, "description": description, "image": image, "location": location, "user": user.id}
                 reqdata = requests.post(url, data=data)
                 data = reqdata.json()
                 msg['added'] = 1
@@ -197,7 +201,7 @@ def updateUser(request):
                             "id": data.id,
                             "name": data.name,
                             "description": data.description,
-                            "image": BASE_ADDRESS+data.image,
+                            "image": data.image,
                             "location": data.location,
                             "likes": data.likes,
                             "created": data.created
@@ -216,7 +220,7 @@ def updateUser(request):
                             lvl['id'] = usr.id
                             lvl['name'] = usr.name
                             lvl['description'] = usr.description
-                            lvl['image'] = BASE_ADDRESS+usr.image
+                            lvl['image'] = usr.image
                             lvl['location'] = usr.location
                             lvl['likes'] = usr.likes
                             lvl['created'] = usr.created
@@ -234,8 +238,6 @@ def updateUser(request):
                 if dog['user'] == request.session['user_id']:
                     filtered_data.append(dog)
                     
-            for i in range(len(filtered_data)):
-                filtered_data[i]['image'] = BASE_ADDRESS + filtered_data[i]['image']
             
             msg['data'] = filtered_data
             msg['signal'] = 1
@@ -271,7 +273,7 @@ def updatingUser(request):
                             "id": data.id,
                             "name": data.name,
                             "description": data.description,
-                            "image": BASE_ADDRESS+data.image,
+                            "image": data.image,
                             "location": data.location,
                             "likes": data.likes,
                             "created": data.created
@@ -295,7 +297,8 @@ def updatingUser(request):
                 if description:
                     upd_data['description'] = description
                 if image:
-                    upd_data['image'] = image.name
+                    pass
+                    #upd_data['image'] = image.name
                 if location:
                     upd_data['location'] = location
 
@@ -304,9 +307,10 @@ def updatingUser(request):
                 prev_imgname = dog.image
 
                 if upd_data.get('image'):
-                    FILE_SYSTEM.delete(prev_imgname)
-                    imagename = FILE_SYSTEM.save(image.name, image)
-                    upd_data['image'] = imagename
+                    pass
+                    # FILE_SYSTEM.delete(prev_imgname)
+                    # imagename = FILE_SYSTEM.save(image.name, image)
+                    # upd_data['image'] = imagename
                 else:
                     upd_data['image'] = prev_imgname
                 
@@ -381,7 +385,7 @@ def deleteUser(request):
                     dog = Dog.objects.get(id=id)
                     if dog.user.id == request.session['user_id']:
                         url = f'{ROOT_ADDRESS}api-auth/delete/{id}/'
-                        FILE_SYSTEM.delete(Dog.objects.get(id=id).image)
+                        #FILE_SYSTEM.delete(Dog.objects.get(id=id).image)
                         response = requests.delete(url)
                         msg['signal'] = 2
                     else:
@@ -398,7 +402,7 @@ def deleteUser(request):
             if dog['user'] == request.session['user_id']:
                 filtered_data.append(dog)
         for i in range(len(filtered_data)):
-            filtered_data[i]['image'] = BASE_ADDRESS+filtered_data[i]['image']
+            filtered_data[i]['image'] = filtered_data[i]['image']
         msg['data'] = filtered_data
         
         return render(request, 'delete.html',msg)

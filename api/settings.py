@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 from pathlib import Path
 import os
 from decouple import config
+import cloudinary.api
+import cloudinary
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -84,15 +86,25 @@ WSGI_APPLICATION = 'api.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'dogsdb',
+#         'HOST': 'dogsdb.cqm81hkg7wbe.ap-south-1.rds.amazonaws.com',
+#     'USER': 'admin',
+#         'PASSWORD': 'May#2002',
+#         'PORT': '3306',
+#     }
+#}
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'dogsdb',
-        'HOST': 'dogsdb.cqm81hkg7wbe.ap-south-1.rds.amazonaws.com',
-        'USER': 'admin',
-        'PASSWORD': 'May#2002',
-        'PORT': '3306',
-    }
+        'default': {
+            'ENGINE': 'djongo',
+            'NAME': 'Dogsnetwork',
+            'ENFORCE_SCHEMA': False,
+            'CLIENT': {
+                'host': 'mongodb+srv://dhananjay2002pai:nL116oS8gdciwcRg@clusterdj.dsiej5g.mongodb.net/'
+            }  
+        }
 }
 # DATABASES = {
 #     'default': {
@@ -156,3 +168,9 @@ STATICFILES_DIRS = [
 #STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/' # 'http://myhost:port/media/'
+
+cloudinary.config( 
+  cloud_name = "dzvstpvlt", 
+  api_key = "188374828552585", 
+  api_secret = "vMCoE46Phj4zK5k7Bd13NOHuW78" 
+)
