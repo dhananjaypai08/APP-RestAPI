@@ -32,6 +32,8 @@ DEBUG = True
 #ALLOWED_HOSTS = ['127.0.0.1', 'dogsnetwork.herokuapp.com']
 ALLOWED_HOSTS = ['*']
 
+runserver.default_port = '8000'
+runserver.default_addr = '0.0.0.0'
 # Application definition
 
 INSTALLED_APPS = [
@@ -108,10 +110,20 @@ DATABASES = {
 }
 # DATABASES = {
 #     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'dogsdb',
+#         'HOST': 'dogsdb.cqm81hkg7wbe.ap-south-1.rds.amazonaws.com',
+#         'USER': 'admin',
+#         'PASSWORD': 'May#2002',
+#         'PORT': '3306',
 #     }
 # }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
 
 
 # Password validation
