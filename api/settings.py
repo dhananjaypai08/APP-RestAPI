@@ -108,22 +108,13 @@ DATABASES = {
             }  
         }
 }
+
 # DATABASES = {
 #     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'dogsdb',
-#         'HOST': 'dogsdb.cqm81hkg7wbe.ap-south-1.rds.amazonaws.com',
-#         'USER': 'admin',
-#         'PASSWORD': 'May#2002',
-#         'PORT': '3306',
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
 #     }
 # }
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
 
 
 # Password validation
