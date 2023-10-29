@@ -12,8 +12,8 @@ from cloudinary import CloudinaryImage
 
 
 if config('environ') == 'prod':
-    BASE_ADDRESS = 'http://www.djbuilds.co/media/'
-    ROOT_ADDRESS = 'http://www.djbuilds.co/'
+    BASE_ADDRESS = 'http://djbuilds.co/media/'
+    ROOT_ADDRESS = 'http://djbuilds.co/'
 else:
     BASE_ADDRESS = 'http://127.0.0.1:8000/media/'
     ROOT_ADDRESS = 'http://127.0.0.1:8000/'
