@@ -32,8 +32,8 @@ DEBUG = True
 #ALLOWED_HOSTS = ['127.0.0.1', 'dogsnetwork.herokuapp.com']
 ALLOWED_HOSTS = ['*']
 
-runserver.default_port = '8000'
-runserver.default_addr = '0.0.0.0'
+# runserver.default_port = '8000'
+# runserver.default_addr = '0.0.0.0'
 # Application definition
 
 INSTALLED_APPS = [
@@ -98,23 +98,23 @@ WSGI_APPLICATION = 'api.wsgi.application'
 #         'PORT': '3306',
 #     }
 #}
-DATABASES = {
-        'default': {
-            'ENGINE': 'djongo',
-            'NAME': 'Dogsnetwork',
-            'ENFORCE_SCHEMA': False,
-            'CLIENT': {
-                'host': 'mongodb+srv://dhananjay2002pai:nL116oS8gdciwcRg@clusterdj.dsiej5g.mongodb.net/'
-            }  
-        }
-}
-
 # DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
+#         'default': {
+#             'ENGINE': 'djongo',
+#             'NAME': 'Dogsnetwork',
+#             'ENFORCE_SCHEMA': False,
+#             'CLIENT': {
+#                 'host': 'mongodb+srv://dhananjay2002pai:nL116oS8gdciwcRg@clusterdogsnetwork.lxzpzip.mongodb.net/'
+#             }  
+#         }
 # }
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
 
 
 # Password validation
