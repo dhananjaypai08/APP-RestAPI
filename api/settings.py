@@ -148,7 +148,8 @@ USE_I18N = True
 USE_TZ = True
 
 # if config('environ') == 'prod':
-#     SECURE_SSL_REDIRECT = True
+# SECURE_SSL_REDIRECT = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
